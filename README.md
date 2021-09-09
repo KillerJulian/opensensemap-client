@@ -5,7 +5,7 @@ Based on API version: `v9.8`
 ## Install
 
 ```sh
-yarn install opensensemap-client
+yarn add opensensemap-client
 ```
 
 ## Usage
