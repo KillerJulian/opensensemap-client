@@ -26,16 +26,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-          registry-url: 'https://npm.pkg.github.com'
-
-      - name: ☁️ Publish to GitHub Package Registry
-        run: yarn publish --access=public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: 📦 Package
         run: yarn pack --filename=package.tgz
 
