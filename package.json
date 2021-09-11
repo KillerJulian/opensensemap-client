@@ -1,5 +1,6 @@
 {
 	"name": "opensensemap-client",
+	"description": "The library allows and improves type-bassed working with the openSenseMap API",
 	"version": "1.0.1",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -25,5 +26,9 @@
 		"build:docs": "typedoc --out docs --entryPoints src/index.ts",
 		"lint": "eslint src --ext .ts",
 		"prepack": "yarn build:lib"
-	}
+	},
+	"keywords": [
+		"opensensemap",
+		"open sense map"
+	]
 }
