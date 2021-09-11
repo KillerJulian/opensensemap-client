@@ -16,11 +16,25 @@ Usage in TypeScript (with ES Modules):
 import * as client from 'opensensemap-client';
 
 async function start() {
+	// Get information about a senseBox
 	const r = await client
 		.getBox('57000b8745fd40c8196ad04c')
 		.catch((e) => console.error(e));
 
 	console.log(JSON.stringify(r));
+
+	// Post new sensor data
+	const data: client.TDataPostNewMeasurements = [];
+	const authToken = 'Your senseBox token';
+
+	data.push({
+		sensor: 'Your sensorId',
+		value: 'Your data'
+	});
+
+	client
+		.postNewMeasurements('Your senseBoxId', data, authToken)
+		.catch(console.error);
 }
 
 start();
@@ -28,17 +42,29 @@ start();
 
 Usage in JavaScript (with CommonJS):
 
-> You can also find the code in the `examples` folder.
-
 ```js
 const client = require('opensensemap-client');
 
 async function start() {
+	// Get information about a senseBox
 	const r = await client
 		.getBox('57000b8745fd40c8196ad04c')
 		.catch((e) => console.error(e));
 
 	console.log(JSON.stringify(r));
+
+	// Post new sensor data
+	const data = [];
+	const authToken = 'Your senseBox token';
+
+	data.push({
+		sensor: 'Your sensorId',
+		value: 'Your data'
+	});
+
+	client
+		.postNewMeasurements('Your senseBoxId', data, authToken)
+		.catch(console.error);
 }
 
 start();
