@@ -74,27 +74,52 @@
 				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">client</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;opensensemap-client&#039;</span><span style="color: #000000">;</span>
 
 <span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">start</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Get information about a senseBox</span>
 <span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">r</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">client</span>
 <span style="color: #000000">        .</span><span style="color: #795E26">getBox</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;57000b8745fd40c8196ad04c&#039;</span><span style="color: #000000">)</span>
 <span style="color: #000000">        .</span><span style="color: #795E26">catch</span><span style="color: #000000">((</span><span style="color: #001080">e</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000">));</span>
 
 <span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #267F99">JSON</span><span style="color: #000000">.</span><span style="color: #795E26">stringify</span><span style="color: #000000">(</span><span style="color: #001080">r</span><span style="color: #000000">));</span>
+
+<span style="color: #000000">    </span><span style="color: #008000">// Post new sensor data</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000">: </span><span style="color: #267F99">client</span><span style="color: #000000">.</span><span style="color: #267F99">TDataPostNewMeasurements</span><span style="color: #000000"> = [];</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">authToken</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;Your senseBox token&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">    </span><span style="color: #001080">data</span><span style="color: #000000">.</span><span style="color: #795E26">push</span><span style="color: #000000">({</span>
+<span style="color: #000000">        </span><span style="color: #001080">sensor:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Your sensorId&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">value:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Your data&#039;</span>
+<span style="color: #000000">    });</span>
+
+<span style="color: #000000">    </span><span style="color: #001080">client</span>
+<span style="color: #000000">        .</span><span style="color: #795E26">postNewMeasurements</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Your senseBoxId&#039;</span><span style="color: #000000">, </span><span style="color: #001080">data</span><span style="color: #000000">, </span><span style="color: #001080">authToken</span><span style="color: #000000">)</span>
+<span style="color: #000000">        .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
 <span style="color: #000000">}</span>
 
 <span style="color: #795E26">start</span><span style="color: #000000">();</span>
 </code></pre>
 				<p>Usage in JavaScript (with CommonJS):</p>
-				<blockquote>
-					<p>You can also find the code in the <code>examples</code> folder.</p>
-				</blockquote>
 				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">client</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;opensensemap-client&#039;</span><span style="color: #000000">);</span>
 
 <span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">start</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Get information about a senseBox</span>
 <span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">r</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">client</span>
 <span style="color: #000000">        .</span><span style="color: #795E26">getBox</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;57000b8745fd40c8196ad04c&#039;</span><span style="color: #000000">)</span>
 <span style="color: #000000">        .</span><span style="color: #795E26">catch</span><span style="color: #000000">((</span><span style="color: #001080">e</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000">));</span>
 
 <span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #267F99">JSON</span><span style="color: #000000">.</span><span style="color: #795E26">stringify</span><span style="color: #000000">(</span><span style="color: #001080">r</span><span style="color: #000000">));</span>
+
+<span style="color: #000000">    </span><span style="color: #008000">// Post new sensor data</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = [];</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">authToken</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;Your senseBox token&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">    </span><span style="color: #001080">data</span><span style="color: #000000">.</span><span style="color: #795E26">push</span><span style="color: #000000">({</span>
+<span style="color: #000000">        </span><span style="color: #001080">sensor:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Your sensorId&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">value:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Your data&#039;</span>
+<span style="color: #000000">    });</span>
+
+<span style="color: #000000">    </span><span style="color: #001080">client</span>
+<span style="color: #000000">        .</span><span style="color: #795E26">postNewMeasurements</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Your senseBoxId&#039;</span><span style="color: #000000">, </span><span style="color: #001080">data</span><span style="color: #000000">, </span><span style="color: #001080">authToken</span><span style="color: #000000">)</span>
+<span style="color: #000000">        .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
 <span style="color: #000000">}</span>
 
 <span style="color: #795E26">start</span><span style="color: #000000">();</span>
@@ -311,6 +336,9 @@
 						<a href="modules.html#TColumns" class="tsd-kind-icon">TColumns</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TDataPostNewMeasurements" class="tsd-kind-icon">TData<wbr>Post<wbr>New<wbr>Measurements</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
 						<a href="modules.html#TExposure" class="tsd-kind-icon">TExposure</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
@@ -320,7 +348,52 @@
 						<a href="modules.html#TModel" class="tsd-kind-icon">TModel</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOcalculateIdw" class="tsd-kind-icon">TOcalculate<wbr>Idw</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOdeleteMeasurements" class="tsd-kind-icon">TOdelete<wbr>Measurements</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOdescriptive" class="tsd-kind-icon">TOdescriptive</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOgetBoxLocations" class="tsd-kind-icon">TOget<wbr>Box<wbr>Locations</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOgetBoxes" class="tsd-kind-icon">TOget<wbr>Boxes</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOgetData" class="tsd-kind-icon">TOget<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOgetDataMulti" class="tsd-kind-icon">TOget<wbr>Data<wbr>Multi</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOgetLatestMeasurementOfSensor" class="tsd-kind-icon">TOget<wbr>Latest<wbr>Measurement<wbr>OfSensor</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOgetSketch" class="tsd-kind-icon">TOget<wbr>Sketch</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOgetStatistics" class="tsd-kind-icon">TOget<wbr>Statistics</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
 						<a href="modules.html#TOperation" class="tsd-kind-icon">TOperation</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOpostNewBox" class="tsd-kind-icon">TOpost<wbr>New<wbr>Box</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOpostNewMeasurement" class="tsd-kind-icon">TOpost<wbr>New<wbr>Measurement</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOregister" class="tsd-kind-icon">TOregister</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOupdateBox" class="tsd-kind-icon">TOupdate<wbr>Box</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#TOupdateUser" class="tsd-kind-icon">TOupdate<wbr>User</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="modules.html#TRFC3339Date" class="tsd-kind-icon">TRFC3339<wbr>Date</a>
