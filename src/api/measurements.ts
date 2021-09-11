@@ -13,10 +13,7 @@ export async function postNewMeasurement(
 	sensorId: string,
 	authorization: string,
 	value: number,
-	optional?: {
-		createdAt?: TRFC3339Date | Date;
-		location?: TLocation;
-	}
+	optional?: TOpostNewMeasurement
 ): Promise<'Measurement saved in box'> {
 	if (optional?.createdAt && optional.createdAt instanceof Date) {
 		optional.createdAt = optional.createdAt.toISOString();
@@ -40,19 +37,18 @@ export async function postNewMeasurement(
 	return r.data;
 }
 
+export type TOpostNewMeasurement = {
+	createdAt?: TRFC3339Date | Date;
+	location?: TLocation;
+};
+
 /**
  * @see https://docs.opensensemap.org/#api-Measurements-getData
  */
 export async function getData(
 	senseBoxId: string,
 	sensorId: string,
-	optional?: {
-		'from-date'?: TRFC3339Date | Date;
-		'to-date'?: TRFC3339Date | Date;
-		download?: boolean;
-		outliers?: 'replace' | 'mark';
-		'outlier-window'?: number;
-	}
+	optional?: TOgetData
 ): Promise<
 	{
 		value: string;
@@ -78,6 +74,14 @@ export async function getData(
 	return r.data;
 }
 
+export type TOgetData = {
+	'from-date'?: TRFC3339Date | Date;
+	'to-date'?: TRFC3339Date | Date;
+	download?: boolean;
+	outliers?: 'replace' | 'mark';
+	'outlier-window'?: number;
+};
+
 /**
  * @see https://docs.opensensemap.org/#api-Measurements-deleteMeasurements
  */
@@ -85,12 +89,7 @@ export async function deleteMeasurements(
 	senseBoxId: string,
 	sensorId: string,
 	authorization: string,
-	optional?: {
-		'from-date'?: TRFC3339Date | Date;
-		'to-date'?: TRFC3339Date | Date;
-		timestamps?: Array<TRFC3339Date | Date>;
-		deleteAllMeasurements?: boolean;
-	}
+	optional?: TOdeleteMeasurements
 ): Promise<{ code: 'Ok'; message: string }> {
 	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
 		optional['from-date'] = optional['from-date'].toISOString();
@@ -119,6 +118,13 @@ export async function deleteMeasurements(
 	return r.data;
 }
 
+export type TOdeleteMeasurements = {
+	'from-date'?: TRFC3339Date | Date;
+	'to-date'?: TRFC3339Date | Date;
+	timestamps?: Array<TRFC3339Date | Date>;
+	deleteAllMeasurements?: boolean;
+};
+
 /**
  * @see https://docs.opensensemap.org/#api-Measurements-getDataMulti
  */
@@ -126,13 +132,7 @@ export async function getDataMulti(
 	boxId: string[] | undefined,
 	bbox: string | undefined,
 	phenomenon: string,
-	optional?: {
-		'from-date'?: TRFC3339Date | Date;
-		'to-date'?: TRFC3339Date | Date;
-		columns?: string | TAdvancedColumns[];
-		download?: boolean;
-		exposure?: string | TExposure[];
-	}
+	optional?: TOgetDataMulti
 ): Promise<
 	{
 		createdAt: TRFC3339Date;
@@ -173,6 +173,14 @@ export async function getDataMulti(
 	return r.data;
 }
 
+export type TOgetDataMulti = {
+	'from-date'?: TRFC3339Date | Date;
+	'to-date'?: TRFC3339Date | Date;
+	columns?: string | TAdvancedColumns[];
+	download?: boolean;
+	exposure?: string | TExposure[];
+};
+
 /**
  * @see https://docs.opensensemap.org/#api-Measurements-getLatestMeasurements
  */
@@ -193,7 +201,7 @@ export async function getLatestMeasurements(senseBoxId: string): Promise<{
 export async function getLatestMeasurementOfSensor(
 	senseBoxId: string,
 	sensorId: string,
-	optional?: { onlyValue?: boolean }
+	optional?: TOgetLatestMeasurementOfSensor
 ): Promise<IGetLatestMeasurement | string> {
 	const r = await axios.get(
 		`https://api.opensensemap.org/boxes/${senseBoxId}/sensors/${sensorId}`,
@@ -203,17 +211,16 @@ export async function getLatestMeasurementOfSensor(
 	return r.data;
 }
 
+export type TOgetLatestMeasurementOfSensor = {
+	onlyValue?: boolean;
+};
+
 /**
  * @see https://docs.opensensemap.org/#api-Measurements-postNewMeasurements
  */
 export async function postNewMeasurements(
 	senseBoxId: string,
-	data: {
-		sensor: string;
-		value: string;
-		createdAt?: TRFC3339Date | Date;
-		location?: TLocation;
-	}[],
+	data: TDataPostNewMeasurements,
 	authorization: string
 ): Promise<'Measurements saved in box'> {
 	data.forEach((element) => {
@@ -234,6 +241,13 @@ export async function postNewMeasurements(
 
 	return r.data;
 }
+
+export type TDataPostNewMeasurements = {
+	sensor: string;
+	value: string;
+	createdAt?: TRFC3339Date | Date;
+	location?: TLocation;
+}[];
 
 export interface IGetLatestMeasurement {
 	_id: string;

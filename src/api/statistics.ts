@@ -16,10 +16,7 @@ export async function descriptive(
 	toDate: TRFC3339Date | Date,
 	operation: TOperation,
 	window: string,
-	optional?: {
-		columns?: string | TColumns[];
-		exposure?: string | TExposure[];
-	}
+	optional?: TOdescriptive
 ): Promise<Record<string, string | number>[]> {
 	if (fromDate instanceof Date) {
 		fromDate = fromDate.toISOString();
@@ -58,3 +55,8 @@ export async function descriptive(
 
 	return r.data;
 }
+
+export type TOdescriptive = {
+	columns?: string | TColumns[];
+	exposure?: string | TExposure[];
+};

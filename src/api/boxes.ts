@@ -36,18 +36,7 @@ export async function getBox(senseBoxId: string): Promise<IBoxData[]> {
  */
 export async function getBoxes(
 	bbox: string,
-	optional?: {
-		date?: TRFC3339Date | Date;
-		phenomenon?: string;
-		grouptag?: string | string[];
-		model?: TModel;
-		classify?: boolean;
-		minimal?: boolean;
-		full?: boolean;
-		near?: string;
-		maxDistance?: number;
-		exposure?: string | TExposure[];
-	}
+	optional?: TOgetBoxes
 ): Promise<IBoxData> {
 	if (optional?.date && optional.date instanceof Date) {
 		optional.date = optional.date.toISOString();
@@ -74,6 +63,19 @@ export async function getBoxes(
 	return r.data;
 }
 
+export type TOgetBoxes = {
+	date?: TRFC3339Date | Date;
+	phenomenon?: string;
+	grouptag?: string | string[];
+	model?: TModel;
+	classify?: boolean;
+	minimal?: boolean;
+	full?: boolean;
+	near?: string;
+	maxDistance?: number;
+	exposure?: string | TExposure[];
+};
+
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-postNewBox
  */
@@ -82,15 +84,7 @@ export async function postNewBox(
 	exposure: TExposure,
 	location: TLocation,
 	authorization: string,
-	optional?: {
-		grouptag?: string;
-		model?: TModel;
-		sensors?: ISensor[];
-		sensorTemplates?: TSensorTemplates;
-		mqtt?: IMQTT;
-		ttn?: ITTN;
-		useAuth?: boolean;
-	}
+	optional?: TOpostNewBox
 ): Promise<{
 	message: 'Box successfully created';
 	data: IBoxData;
@@ -115,23 +109,23 @@ export async function postNewBox(
 	return r.data;
 }
 
+export type TOpostNewBox = {
+	grouptag?: string;
+	model?: TModel;
+	sensors?: ISensor[];
+	sensorTemplates?: TSensorTemplates;
+	mqtt?: IMQTT;
+	ttn?: ITTN;
+	useAuth?: boolean;
+};
+
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-updateBox
  */
 export async function updateBox(
 	senseBoxId: string,
 	authorization: string,
-	optional: {
-		name?: string;
-		grouptag?: string;
-		location?: TLocation;
-		sensors?: ISensorUpdate;
-		mqtt?: IMQTT;
-		ttn?: ITTN;
-		description?: string;
-		image?: string;
-		addons?: Record<string | number, string | number>;
-	}
+	optional: TOupdateBox
 ): Promise<{
 	code: 'Ok';
 	data: IBoxData;
@@ -148,6 +142,18 @@ export async function updateBox(
 
 	return r.data;
 }
+
+export type TOupdateBox = {
+	name?: string;
+	grouptag?: string;
+	location?: TLocation;
+	sensors?: ISensorUpdate;
+	mqtt?: IMQTT;
+	ttn?: ITTN;
+	description?: string;
+	image?: string;
+	addons?: Record<string | number, string | number>;
+};
 
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-deleteBox
@@ -181,18 +187,7 @@ export async function deleteBox(
 export async function getSketch(
 	senseBoxId: string,
 	authorization: string,
-	optional?: {
-		serialPort?: 'Serial1' | 'Serial2';
-		soilDigitalPort?: 'A' | 'B' | 'C';
-		soundMeterPort?: 'A' | 'B' | 'C';
-		windSpeedPort?: 'A' | 'B' | 'C';
-		ssid?: string;
-		password?: string;
-		devEUI?: string;
-		appEUI?: string;
-		appKey?: string;
-		display_enabled?: boolean;
-	}
+	optional?: TOgetSketch
 ): Promise<string> {
 	const r = await axios.get(
 		`https://api.opensensemap.org/boxes/${senseBoxId}/script`,
@@ -207,15 +202,25 @@ export async function getSketch(
 	return r.data;
 }
 
+export type TOgetSketch = {
+	serialPort?: 'Serial1' | 'Serial2';
+	soilDigitalPort?: 'A' | 'B' | 'C';
+	soundMeterPort?: 'A' | 'B' | 'C';
+	windSpeedPort?: 'A' | 'B' | 'C';
+	ssid?: string;
+	password?: string;
+	devEUI?: string;
+	appEUI?: string;
+	appKey?: string;
+	display_enabled?: boolean;
+};
+
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getBoxLocations
  */
 export async function getBoxLocations(
 	senseBoxId: string,
-	optional?: {
-		'from-date': TRFC3339Date | Date;
-		'to-date': TRFC3339Date | Date;
-	}
+	optional?: TOgetBoxLocations
 ): Promise<IBoxCurrentLocation[]> {
 	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
 		optional['from-date'] = optional['from-date'].toISOString();
@@ -239,6 +244,11 @@ export async function getBoxLocations(
 
 	return r.data;
 }
+
+export type TOgetBoxLocations = {
+	'from-date': TRFC3339Date | Date;
+	'to-date': TRFC3339Date | Date;
+};
 
 export interface IBoxData {
 	_id: string;

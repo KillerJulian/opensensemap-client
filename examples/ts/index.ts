@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const client = require('../../dist/index');
+import * as client from '../../dist/index';
 
 async function start() {
 	// Get information about a senseBox
@@ -10,7 +9,7 @@ async function start() {
 	console.log(JSON.stringify(r));
 
 	// Post new sensor data
-	const data = [];
+	const data: client.TDataPostNewMeasurements = [];
 	const authToken = 'Your senseBox token';
 
 	data.push({
@@ -24,4 +23,3 @@ async function start() {
 }
 
 start();
-
