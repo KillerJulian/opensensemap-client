@@ -1,4 +1,6 @@
 # openSenseMap Client
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FKillerJulian%2Fopensensemap-client.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FKillerJulian%2Fopensensemap-client?ref=badge_shield)
+
 
 Based on API version: `v9.8`
 
@@ -126,3 +128,6 @@ start();
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/KillerJulian/opensensemap-client/issues). You can also take a look at the [contributing guide](https://github.com/KillerJulian/opensensemap-client/blob/master/CONTRIBUTING.md).
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FKillerJulian%2Fopensensemap-client.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FKillerJulian%2Fopensensemap-client?ref=badge_large)
