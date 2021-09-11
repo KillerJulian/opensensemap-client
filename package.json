@@ -1,9 +1,11 @@
 {
 	"name": "opensensemap-client",
+	"description": "The library allows and improves type-bassed working with the openSenseMap API",
 	"version": "1.0.1",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"repository": "https://github.com/KillerJulian/opensensemap-client",
+	"homepage": "https://killerjulian.github.io/opensensemap-client/",
 	"author": "KillerJulian <info@killerjulian.de>",
 	"license": "MIT",
 	"dependencies": {
@@ -24,5 +26,9 @@
 		"build:docs": "typedoc --out docs --entryPoints src/index.ts",
 		"lint": "eslint src --ext .ts",
 		"prepack": "yarn build:lib"
-	}
+	},
+	"keywords": [
+		"opensensemap",
+		"open sense map"
+	]
 }

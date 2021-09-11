@@ -5,7 +5,9 @@ import { TAdvancedColumns, TExposure, TLocation, TRFC3339Date } from './types';
 // https://docs.opensensemap.org/#api-Measurements
 //
 
-// https://docs.opensensemap.org/#api-Measurements-postNewMeasurement
+/**
+ * @see https://docs.opensensemap.org/#api-Measurements-postNewMeasurement
+ */
 export async function postNewMeasurement(
 	senseBoxId: string,
 	sensorId: string,
@@ -38,7 +40,9 @@ export async function postNewMeasurement(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Measurements-getData
+/**
+ * @see https://docs.opensensemap.org/#api-Measurements-getData
+ */
 export async function getData(
 	senseBoxId: string,
 	sensorId: string,
@@ -74,7 +78,9 @@ export async function getData(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Measurements-deleteMeasurements
+/**
+ * @see https://docs.opensensemap.org/#api-Measurements-deleteMeasurements
+ */
 export async function deleteMeasurements(
 	senseBoxId: string,
 	sensorId: string,
@@ -113,7 +119,9 @@ export async function deleteMeasurements(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Measurements-getDataMulti
+/**
+ * @see https://docs.opensensemap.org/#api-Measurements-getDataMulti
+ */
 export async function getDataMulti(
 	boxId: string[] | undefined,
 	bbox: string | undefined,
@@ -165,7 +173,9 @@ export async function getDataMulti(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Measurements-getLatestMeasurements
+/**
+ * @see https://docs.opensensemap.org/#api-Measurements-getLatestMeasurements
+ */
 export async function getLatestMeasurements(senseBoxId: string): Promise<{
 	_id: string;
 	sensors: IGetLatestMeasurement[];
@@ -177,7 +187,9 @@ export async function getLatestMeasurements(senseBoxId: string): Promise<{
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Measurements-getLatestMeasurementOfSensor
+/**
+ * @see https://docs.opensensemap.org/#api-Measurements-getLatestMeasurementOfSensor
+ */
 export async function getLatestMeasurementOfSensor(
 	senseBoxId: string,
 	sensorId: string,
@@ -191,7 +203,9 @@ export async function getLatestMeasurementOfSensor(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Measurements-postNewMeasurements
+/**
+ * @see https://docs.opensensemap.org/#api-Measurements-postNewMeasurements
+ */
 export async function postNewMeasurements(
 	senseBoxId: string,
 	data: {

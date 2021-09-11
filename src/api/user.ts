@@ -4,7 +4,9 @@ import axios from 'axios';
 // https://docs.opensensemap.org/#api-Users
 //
 
-// https://docs.opensensemap.org/#api-Users-register
+/**
+ * @see https://docs.opensensemap.org/#api-Users-register
+ */
 export async function register(
 	name: string,
 	email: string,
@@ -36,7 +38,9 @@ export async function register(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-deleteUser
+/**
+ * @see https://docs.opensensemap.org/#api-Users-deleteUser
+ */
 export async function deleteUser(
 	password: string,
 	authorization: string
@@ -56,7 +60,9 @@ export async function deleteUser(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-getUser
+/**
+ * @see https://docs.opensensemap.org/#api-Users-getUser
+ */
 export async function getUser(authorization: string): Promise<{
 	code: 'Ok';
 	data: {
@@ -72,7 +78,9 @@ export async function getUser(authorization: string): Promise<{
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-refresh_auth
+/**
+ * @see https://docs.opensensemap.org/#api-Users-refresh_auth
+ */
 export async function refreshAuth(token: string): Promise<{
 	code: 'Authorized';
 	message: 'Successfully refreshed auth';
@@ -92,7 +100,9 @@ export async function refreshAuth(token: string): Promise<{
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-sign_in
+/**
+ * @see https://docs.opensensemap.org/#api-Users-sign_in
+ */
 export async function signIn(
 	email: string,
 	password: string
@@ -113,7 +123,9 @@ export async function signIn(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-sign_out
+/**
+ * @see https://docs.opensensemap.org/#api-Users-sign_out
+ */
 export async function signOut(
 	authorization: string
 ): Promise<{ code: 'Ok'; message: 'Successfully signed out' }> {
@@ -130,7 +142,9 @@ export async function signOut(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-updateUser
+/**
+ * @see https://docs.opensensemap.org/#api-Users-updateUser
+ */
 export async function updateUser(
 	currentPassword: string,
 	authorization: string,
@@ -159,7 +173,9 @@ export async function updateUser(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-confirm_email
+/**
+ * @see https://docs.opensensemap.org/#api-Users-confirm_email
+ */
 export async function confirmEmail(
 	email: string,
 	token: string
@@ -178,9 +194,9 @@ export async function confirmEmail(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-getUserBoxes
 /**
  * This request is unusable!!!
+ * @see https://docs.opensensemap.org/#api-Users-getUserBoxes
  */
 export async function getUserBoxes(): Promise<unknown> {
 	const r = await axios.post('https://api.opensensemap.org/users/me/boxes');
@@ -188,7 +204,9 @@ export async function getUserBoxes(): Promise<unknown> {
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-resend_email_confirmation
+/**
+ * @see https://docs.opensensemap.org/#api-Users-resend_email_confirmation
+ */
 export async function resendEmailConfirmation(authorization: string): Promise<{
 	code: 'Ok';
 	message: string;
@@ -206,7 +224,9 @@ export async function resendEmailConfirmation(authorization: string): Promise<{
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-request_password_reset
+/**
+ * @see https://docs.opensensemap.org/#api-Users-request_password_reset
+ */
 export async function requestPasswordReset(
 	email: string
 ): Promise<{ code: 'Ok'; message: 'Password reset initiated' }> {
@@ -220,7 +240,9 @@ export async function requestPasswordReset(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Users-password_reset
+/**
+ * @see https://docs.opensensemap.org/#api-Users-password_reset
+ */
 export async function passwordReset(
 	password: string,
 	token: string

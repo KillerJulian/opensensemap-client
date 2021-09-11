@@ -5,7 +5,9 @@ import { TExposure, TRFC3339Date } from './types';
 // https://docs.opensensemap.org/#api-Interpolation
 //
 
-// https://docs.opensensemap.org/#api-Interpolation-calculateIdw
+/**
+ * @see https://docs.opensensemap.org/#api-Interpolation-calculateIdw
+ */
 export async function calculateIdw(
 	phenomenon: string,
 	bbox: string,
