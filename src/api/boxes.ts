@@ -15,7 +15,9 @@ import {
 // https://docs.opensensemap.org/#api-Boxes
 //
 
-// https://docs.opensensemap.org/#api-Boxes-getBox
+/**
+ * @see https://docs.opensensemap.org/#api-Boxes-getBox
+ */
 export async function getBox(senseBoxId: string): Promise<IBoxData[]> {
 	const r = await axios.get(
 		`https://api.opensensemap.org/boxes/${senseBoxId}`,
@@ -29,7 +31,9 @@ export async function getBox(senseBoxId: string): Promise<IBoxData[]> {
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Boxes-getBoxes
+/**
+ * @see https://docs.opensensemap.org/#api-Boxes-getBoxes
+ */
 export async function getBoxes(
 	bbox: string,
 	optional?: {
@@ -70,7 +74,9 @@ export async function getBoxes(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Boxes-postNewBox
+/**
+ * @see https://docs.opensensemap.org/#api-Boxes-postNewBox
+ */
 export async function postNewBox(
 	name: string,
 	exposure: TExposure,
@@ -109,7 +115,9 @@ export async function postNewBox(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Boxes-updateBox
+/**
+ * @see https://docs.opensensemap.org/#api-Boxes-updateBox
+ */
 export async function updateBox(
 	senseBoxId: string,
 	authorization: string,
@@ -141,7 +149,9 @@ export async function updateBox(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Boxes-deleteBox
+/**
+ * @see https://docs.opensensemap.org/#api-Boxes-deleteBox
+ */
 export async function deleteBox(
 	senseBoxId: string,
 	authorization: string,
@@ -165,7 +175,9 @@ export async function deleteBox(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Boxes-getSketch
+/**
+ * @see https://docs.opensensemap.org/#api-Boxes-getSketch
+ */
 export async function getSketch(
 	senseBoxId: string,
 	authorization: string,
@@ -195,7 +207,9 @@ export async function getSketch(
 	return r.data;
 }
 
-// https://docs.opensensemap.org/#api-Boxes-getBoxLocations
+/**
+ * @see https://docs.opensensemap.org/#api-Boxes-getBoxLocations
+ */
 export async function getBoxLocations(
 	senseBoxId: string,
 	optional?: {

@@ -5,7 +5,9 @@ import { TColumns, TExposure, TOperation, TRFC3339Date } from './types';
 // https://docs.opensensemap.org/#api-Statistics
 //
 
-// https://docs.opensensemap.org/#api-Statistics-descriptive
+/**
+ * @see https://docs.opensensemap.org/#api-Statistics-descriptive
+ */
 export async function descriptive(
 	boxId: string | undefined,
 	bbox: string | undefined,
