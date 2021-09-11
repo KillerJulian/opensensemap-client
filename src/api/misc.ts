@@ -9,7 +9,7 @@ import axios from 'axios';
  */
 export async function getStatistics(
 	optional?: TOgetStatistics
-): Promise<[number, number, number] | [string, string, string]> {
+): Promise<number[] | string[]> {
 	const r = await axios.get('https://api.opensensemap.org/stats', {
 		params: optional
 	});
