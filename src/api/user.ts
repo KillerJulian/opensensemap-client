@@ -11,9 +11,7 @@ export async function register(
 	name: string,
 	email: string,
 	password: string,
-	optional?: {
-		language: string;
-	}
+	optional?: TOregister
 ): Promise<{
 	code: 'Created';
 	message: 'Successfully registered new user';
@@ -37,6 +35,10 @@ export async function register(
 
 	return r.data;
 }
+
+export type TOregister = {
+	language: string;
+};
 
 /**
  * @see https://docs.opensensemap.org/#api-Users-deleteUser
@@ -148,12 +150,7 @@ export async function signOut(
 export async function updateUser(
 	currentPassword: string,
 	authorization: string,
-	optional: {
-		email?: string;
-		language?: string;
-		name?: string;
-		newPassword?: string;
-	}
+	optional: TOupdateUser
 ): Promise<IUserUpdated | IUserNotUpdated> {
 	const r = await axios.put(
 		'https://api.opensensemap.org/users/me',
@@ -172,6 +169,13 @@ export async function updateUser(
 
 	return r.data;
 }
+
+export type TOupdateUser = {
+	email?: string;
+	language?: string;
+	name?: string;
+	newPassword?: string;
+};
 
 /**
  * @see https://docs.opensensemap.org/#api-Users-confirm_email

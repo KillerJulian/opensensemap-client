@@ -11,16 +11,7 @@ import { TExposure, TRFC3339Date } from './types';
 export async function calculateIdw(
 	phenomenon: string,
 	bbox: string,
-	optional?: {
-		'from-date'?: TRFC3339Date | Date;
-		'to-date'?: TRFC3339Date | Date;
-		gridType?: 'hex' | 'square' | 'triangle';
-		cellWidth?: number;
-		power?: number;
-		numTimeSteps?: number;
-		numClasses?: number;
-		exposure?: string | TExposure[];
-	}
+	optional?: TOcalculateIdw
 ): Promise<
 	{ code: 'NotFound'; message: 'no measurements found' } | ICalculateIdw
 > {
@@ -42,6 +33,17 @@ export async function calculateIdw(
 
 	return r.data;
 }
+
+export type TOcalculateIdw = {
+	'from-date'?: TRFC3339Date | Date;
+	'to-date'?: TRFC3339Date | Date;
+	gridType?: 'hex' | 'square' | 'triangle';
+	cellWidth?: number;
+	power?: number;
+	numTimeSteps?: number;
+	numClasses?: number;
+	exposure?: string | TExposure[];
+};
 
 export interface ICalculateIdw {
 	code: 'Ok';
