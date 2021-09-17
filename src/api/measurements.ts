@@ -12,7 +12,7 @@ export async function postNewMeasurement(
 	senseBoxId: string,
 	sensorId: string,
 	authorization: string,
-	value: number,
+	value: string | number,
 	optional?: TOpostNewMeasurement
 ): Promise<'Measurement saved in box'> {
 	if (optional?.createdAt && optional.createdAt instanceof Date) {
@@ -23,7 +23,7 @@ export async function postNewMeasurement(
 		`https://api.opensensemap.org/boxes/${senseBoxId}/${sensorId}`,
 		Object.assign(
 			{
-				value
+				value: typeof value === 'string' ? value : value.toString()
 			},
 			optional
 		),
@@ -224,6 +224,10 @@ export async function postNewMeasurements(
 	authorization: string
 ): Promise<'Measurements saved in box'> {
 	data.forEach((element) => {
+		if(typeof element.value === 'number') {
+			element.value = element.value.toString();
+		}
+
 		if (element.createdAt && element.createdAt instanceof Date) {
 			element.createdAt = element.createdAt.toISOString();
 		}
@@ -244,7 +248,7 @@ export async function postNewMeasurements(
 
 export type TDataPostNewMeasurements = {
 	sensor: string;
-	value: string;
+	value: string | number;
 	createdAt?: TRFC3339Date | Date;
 	location?: TLocation;
 }[];
