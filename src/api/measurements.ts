@@ -224,7 +224,7 @@ export async function postNewMeasurements(
 	authorization: string
 ): Promise<'Measurements saved in box'> {
 	data.forEach((element) => {
-		if(typeof element.value === 'number') {
+		if (typeof element.value === 'number') {
 			element.value = element.value.toString();
 		}
 
