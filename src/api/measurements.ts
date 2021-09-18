@@ -11,8 +11,8 @@ import { TAdvancedColumns, TExposure, TLocation, TRFC3339Date } from './types';
 export async function postNewMeasurement(
 	senseBoxId: string,
 	sensorId: string,
-	authorization: string,
 	value: string | number,
+	authorization?: string,
 	optional?: TOpostNewMeasurement
 ): Promise<'Measurement saved in box'> {
 	if (optional?.createdAt && optional.createdAt instanceof Date) {
@@ -29,7 +29,7 @@ export async function postNewMeasurement(
 		),
 		{
 			headers: {
-				Authorization: `Bearer ${authorization}`
+				Authorization: authorization
 			}
 		}
 	);
@@ -221,7 +221,7 @@ export type TOgetLatestMeasurementOfSensor = {
 export async function postNewMeasurements(
 	senseBoxId: string,
 	data: TDataPostNewMeasurements,
-	authorization: string
+	authorization?: string
 ): Promise<'Measurements saved in box'> {
 	data.forEach((element) => {
 		if (typeof element.value === 'number') {
@@ -238,7 +238,7 @@ export async function postNewMeasurements(
 		data,
 		{
 			headers: {
-				Authorization: `Bearer ${authorization}`
+				Authorization: authorization
 			}
 		}
 	);
