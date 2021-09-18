@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IBoxData } from './boxes';
 
 //
 // https://docs.opensensemap.org/#api-Users
@@ -199,11 +200,19 @@ export async function confirmEmail(
 }
 
 /**
- * This request is unusable!!!
  * @see https://docs.opensensemap.org/#api-Users-getUserBoxes
  */
-export async function getUserBoxes(): Promise<unknown> {
-	const r = await axios.post('https://api.opensensemap.org/users/me/boxes');
+export async function getUserBoxes(authorization: string): Promise<{
+	code: 'Ok';
+	data: {
+		boxes: IBoxData[];
+	};
+}> {
+	const r = await axios.get('https://api.opensensemap.org/users/me/boxes', {
+		headers: {
+			Authorization: `Bearer ${authorization}`
+		}
+	});
 
 	return r.data;
 }
