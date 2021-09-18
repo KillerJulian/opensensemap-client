@@ -133,7 +133,6 @@ start();
 		- Function [confirmEmail](https://killerjulian.github.io/opensensemap-client/modules.html#confirmEmail)
 	- [list all boxes of the signed in user](https://docs.opensensemap.org/#api-Users-getUserBoxes)
 		- Function [getUserBoxes](https://killerjulian.github.io/opensensemap-client/modules.html#getUserBoxes)
-		- NOT USABLE!
 	- [request a resend of the email confirmation](https://docs.opensensemap.org/#api-Users-resend_email_confirmation)
 		- Function [resendEmailConfirmation](https://killerjulian.github.io/opensensemap-client/modules.html#resendEmailConfirmation)
 	- [request password reset](https://docs.opensensemap.org/#api-Users-request_password_reset)
