@@ -220,12 +220,8 @@ export async function postNewMeasurements(
 		}
 	});
 
-	const r = await axios.post(
-		`https://api.opensensemap.org/boxes/${senseBoxId}/data`,
-		data,
-		{
-			headers: authorization ? { Authorization: authorization } : {}
-		}
+	const r = await axios.post(`https://api.opensensemap.org/boxes/${senseBoxId}/data`, data, {
+		headers: authorization ? { Authorization: authorization } : {}
 	});
 
 	return r.data;
