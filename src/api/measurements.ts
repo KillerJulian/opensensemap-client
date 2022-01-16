@@ -64,12 +64,9 @@ export async function getData(
 		optional['to-date'] = optional['to-date'].toISOString();
 	}
 
-	const r = await axios.get(
-		`https://api.opensensemap.org/boxes/${senseBoxId}/data/${sensorId}`,
-		{
-			params: Object.assign({ format: 'json' }, optional)
-		}
-	);
+	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/data/${sensorId}`, {
+		params: Object.assign({ format: 'json' }, optional)
+	});
 
 	return r.data;
 }
@@ -105,15 +102,12 @@ export async function deleteMeasurements(
 		}
 	});
 
-	const r = await axios.delete(
-		`https://api.opensensemap.org/boxes/${senseBoxId}/${sensorId}/measurements`,
-		{
-			headers: {
-				Authorization: `Bearer ${authorization}`
-			},
-			data: optional
-		}
-	);
+	const r = await axios.delete(`https://api.opensensemap.org/boxes/${senseBoxId}/${sensorId}/measurements`, {
+		headers: {
+			Authorization: `Bearer ${authorization}`
+		},
+		data: optional
+	});
 
 	return r.data;
 }
@@ -188,9 +182,7 @@ export async function getLatestMeasurements(senseBoxId: string): Promise<{
 	_id: string;
 	sensors: IGetLatestMeasurement[];
 }> {
-	const r = await axios.get(
-		`https://api.opensensemap.org/boxes/${senseBoxId}/sensors`
-	);
+	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/sensors`);
 
 	return r.data;
 }
@@ -203,10 +195,7 @@ export async function getLatestMeasurementOfSensor(
 	sensorId: string,
 	optional?: TOgetLatestMeasurementOfSensor
 ): Promise<IGetLatestMeasurement | string> {
-	const r = await axios.get(
-		`https://api.opensensemap.org/boxes/${senseBoxId}/sensors/${sensorId}`,
-		{ params: optional }
-	);
+	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/sensors/${sensorId}`, { params: optional });
 
 	return r.data;
 }
@@ -233,15 +222,11 @@ export async function postNewMeasurements(
 		}
 	});
 
-	const r = await axios.post(
-		`https://api.opensensemap.org/boxes/${senseBoxId}/data`,
-		data,
-		{
-			headers: {
-				Authorization: authorization
-			}
+	const r = await axios.post(`https://api.opensensemap.org/boxes/${senseBoxId}/data`, data, {
+		headers: {
+			Authorization: authorization
 		}
-	);
+	});
 
 	return r.data;
 }

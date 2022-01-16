@@ -1,15 +1,5 @@
 import axios from 'axios';
-import {
-	IMQTT,
-	ISensor,
-	ISensorUpdate,
-	ITTN,
-	TExposure,
-	TLocation,
-	TModel,
-	TRFC3339Date,
-	TSensorTemplates
-} from './types';
+import { IMQTT, ISensor, ISensorUpdate, ITTN, TExposure, TLocation, TModel, TRFC3339Date, TSensorTemplates } from './types';
 
 //
 // https://docs.opensensemap.org/#api-Boxes
@@ -19,14 +9,11 @@ import {
  * @see https://docs.opensensemap.org/#api-Boxes-getBox
  */
 export async function getBox(senseBoxId: string): Promise<IBoxData[]> {
-	const r = await axios.get(
-		`https://api.opensensemap.org/boxes/${senseBoxId}`,
-		{
-			params: {
-				format: 'json'
-			}
+	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}`, {
+		params: {
+			format: 'json'
 		}
-	);
+	});
 
 	return r.data;
 }
@@ -34,10 +21,7 @@ export async function getBox(senseBoxId: string): Promise<IBoxData[]> {
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getBoxes
  */
-export async function getBoxes(
-	bbox: string,
-	optional?: TOgetBoxes
-): Promise<IBoxData> {
+export async function getBoxes(bbox: string, optional?: TOgetBoxes): Promise<IBoxData> {
 	if (optional?.date && optional.date instanceof Date) {
 		optional.date = optional.date.toISOString();
 	}
@@ -130,15 +114,11 @@ export async function updateBox(
 	code: 'Ok';
 	data: IBoxData;
 }> {
-	const r = await axios.put(
-		`https://api.opensensemap.org/boxes/${senseBoxId}`,
-		optional,
-		{
-			headers: {
-				Authorization: `Bearer ${authorization}`
-			}
+	const r = await axios.put(`https://api.opensensemap.org/boxes/${senseBoxId}`, optional, {
+		headers: {
+			Authorization: `Bearer ${authorization}`
 		}
-	);
+	});
 
 	return r.data;
 }
@@ -166,17 +146,14 @@ export async function deleteBox(
 	code: 'Ok';
 	message: 'box and all associated measurements marked for deletion';
 }> {
-	const r = await axios.delete(
-		`https://api.opensensemap.org/boxes/${senseBoxId}`,
-		{
-			headers: {
-				Authorization: `Bearer ${authorization}`
-			},
-			data: {
-				password
-			}
+	const r = await axios.delete(`https://api.opensensemap.org/boxes/${senseBoxId}`, {
+		headers: {
+			Authorization: `Bearer ${authorization}`
+		},
+		data: {
+			password
 		}
-	);
+	});
 
 	return r.data;
 }
@@ -184,20 +161,13 @@ export async function deleteBox(
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getSketch
  */
-export async function getSketch(
-	senseBoxId: string,
-	authorization: string,
-	optional?: TOgetSketch
-): Promise<string> {
-	const r = await axios.get(
-		`https://api.opensensemap.org/boxes/${senseBoxId}/script`,
-		{
-			headers: {
-				Authorization: `Bearer ${authorization}`
-			},
-			params: optional
-		}
-	);
+export async function getSketch(senseBoxId: string, authorization: string, optional?: TOgetSketch): Promise<string> {
+	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/script`, {
+		headers: {
+			Authorization: `Bearer ${authorization}`
+		},
+		params: optional
+	});
 
 	return r.data;
 }
@@ -218,10 +188,7 @@ export type TOgetSketch = {
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getBoxLocations
  */
-export async function getBoxLocations(
-	senseBoxId: string,
-	optional?: TOgetBoxLocations
-): Promise<IBoxCurrentLocation[]> {
+export async function getBoxLocations(senseBoxId: string, optional?: TOgetBoxLocations): Promise<IBoxCurrentLocation[]> {
 	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
 		optional['from-date'] = optional['from-date'].toISOString();
 	}
@@ -230,17 +197,14 @@ export async function getBoxLocations(
 		optional['to-date'] = optional['to-date'].toISOString();
 	}
 
-	const r = await axios.get(
-		`https://api.opensensemap.org/boxes/${senseBoxId}/locations`,
-		{
-			params: Object.assign(
-				{
-					format: 'json'
-				},
-				optional
-			)
-		}
-	);
+	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/locations`, {
+		params: Object.assign(
+			{
+				format: 'json'
+			},
+			optional
+		)
+	});
 
 	return r.data;
 }

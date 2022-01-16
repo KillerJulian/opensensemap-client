@@ -13,16 +13,7 @@ export type TModel =
 
 export type TExposure = 'indoor' | 'outdoor' | 'mobile' | 'unknown';
 
-export type TColumns =
-	| 'boxId'
-	| 'boxName'
-	| 'exposure'
-	| 'height'
-	| 'lat'
-	| 'lon'
-	| 'phenomenon'
-	| 'sensorType'
-	| 'unit';
+export type TColumns = 'boxId' | 'boxName' | 'exposure' | 'height' | 'lat' | 'lon' | 'phenomenon' | 'sensorType' | 'unit';
 
 export type TAdvancedColumns =
 	| 'boxId'
@@ -51,9 +42,7 @@ export type TOperation =
 	| 'sum'
 	| 'variance';
 
-export type TLocation =
-	| { lat: number; lng: number; height?: number }
-	| [number, number, number?];
+export type TLocation = { lat: number; lng: number; height?: number } | [number, number, number?];
 
 export type TSensorTemplates =
 	| 'hdc1080'
@@ -79,12 +68,7 @@ export interface IMQTT {
 export interface ITTN {
 	dev_id: string;
 	app_id: string;
-	profile:
-		| 'lora-serialization'
-		| 'sensebox/home'
-		| 'json'
-		| 'debug'
-		| 'cayenne-lpp';
+	profile: 'lora-serialization' | 'sensebox/home' | 'json' | 'debug' | 'cayenne-lpp';
 	decodeOptions?: [];
 	port: number;
 }

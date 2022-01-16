@@ -12,9 +12,7 @@ export async function calculateIdw(
 	phenomenon: string,
 	bbox: string,
 	optional?: TOcalculateIdw
-): Promise<
-	{ code: 'NotFound'; message: 'no measurements found' } | ICalculateIdw
-> {
+): Promise<{ code: 'NotFound'; message: 'no measurements found' } | ICalculateIdw> {
 	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
 		optional['from-date'] = optional['from-date'].toISOString();
 	}

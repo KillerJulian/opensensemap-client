@@ -7,9 +7,7 @@ import axios from 'axios';
 /**
  * @see https://docs.opensensemap.org/#api-Misc-getStatistics
  */
-export async function getStatistics(
-	optional?: TOgetStatistics
-): Promise<number[] | string[]> {
+export async function getStatistics(optional?: TOgetStatistics): Promise<number[] | string[]> {
 	const r = await axios.get('https://api.opensensemap.org/stats', {
 		params: optional
 	});
