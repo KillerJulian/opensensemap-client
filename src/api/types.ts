@@ -1,6 +1,6 @@
-export type TRFC3339Date = string;
+export type RFC3339Date = string;
 
-export type TModel =
+export type Model =
 	| 'homeEthernet'
 	| 'homeWifi'
 	| 'homeEthernetFeinstaub'
@@ -11,20 +11,11 @@ export type TModel =
 	| 'luftdaten_sds011_bmp180'
 	| 'luftdaten_sds011_bme280';
 
-export type TExposure = 'indoor' | 'outdoor' | 'mobile' | 'unknown';
+export type Exposure = 'indoor' | 'outdoor' | 'mobile' | 'unknown';
 
-export type TColumns =
-	| 'boxId'
-	| 'boxName'
-	| 'exposure'
-	| 'height'
-	| 'lat'
-	| 'lon'
-	| 'phenomenon'
-	| 'sensorType'
-	| 'unit';
+export type Columns = 'boxId' | 'boxName' | 'exposure' | 'height' | 'lat' | 'lon' | 'phenomenon' | 'sensorType' | 'unit';
 
-export type TAdvancedColumns =
+export type AdvancedColumns =
 	| 'boxId'
 	| 'boxName'
 	| 'exposure'
@@ -38,7 +29,7 @@ export type TAdvancedColumns =
 	| 'value'
 	| 'sensorId';
 
-export type TOperation =
+export type Operation =
 	| 'arithmeticMean'
 	| 'geometricMean'
 	| 'harmonicMean'
@@ -51,11 +42,9 @@ export type TOperation =
 	| 'sum'
 	| 'variance';
 
-export type TLocation =
-	| { lat: number; lng: number; height?: number }
-	| [number, number, number?];
+export type Location = { lat: number; lng: number; height?: number } | [number, number, number?];
 
-export type TSensorTemplates =
+export type SensorTemplates =
 	| 'hdc1080'
 	| 'bmp280'
 	| 'tsl45315'
@@ -67,7 +56,7 @@ export type TSensorTemplates =
 	| 'windspeed'
 	| 'scd30';
 
-export interface IMQTT {
+export interface MQTT {
 	enabled: boolean;
 	url: string;
 	topic: string;
@@ -76,27 +65,22 @@ export interface IMQTT {
 	connectionOptions: string;
 }
 
-export interface ITTN {
+export interface TTN {
 	dev_id: string;
 	app_id: string;
-	profile:
-		| 'lora-serialization'
-		| 'sensebox/home'
-		| 'json'
-		| 'debug'
-		| 'cayenne-lpp';
+	profile: 'lora-serialization' | 'sensebox/home' | 'json' | 'debug' | 'cayenne-lpp';
 	decodeOptions?: [];
 	port: number;
 }
 
-export interface ISensor {
+export interface Sensor {
 	title: string;
 	unit: string;
 	sensorType: string;
 	icon?: string;
 }
 
-export interface ISensorUpdate extends ISensor {
+export interface SensorUpdate extends Sensor {
 	edited: string;
 	new: string;
 	deleted: string;

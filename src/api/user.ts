@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IBoxData } from './boxes';
+import { BoxData } from './boxes';
 
 //
 // https://docs.opensensemap.org/#api-Users
@@ -12,12 +12,12 @@ export async function register(
 	name: string,
 	email: string,
 	password: string,
-	optional?: TOregister
+	options?: RegisterOptions
 ): Promise<{
 	code: 'Created';
 	message: 'Successfully registered new user';
 	data: {
-		user: IUser;
+		user: User;
 	};
 	token: string;
 	refreshToken: string;
@@ -30,14 +30,14 @@ export async function register(
 				email,
 				password
 			},
-			optional
+			options
 		)
 	);
 
 	return r.data;
 }
 
-export type TOregister = {
+export type RegisterOptions = {
 	language: string;
 };
 
@@ -69,7 +69,7 @@ export async function deleteUser(
 export async function getUser(authorization: string): Promise<{
 	code: 'Ok';
 	data: {
-		me: IUser;
+		me: User;
 	};
 }> {
 	const r = await axios.get('https://api.opensensemap.org/users/me', {
@@ -88,17 +88,14 @@ export async function refreshAuth(token: string): Promise<{
 	code: 'Authorized';
 	message: 'Successfully refreshed auth';
 	data: {
-		user: IUser;
+		user: User;
 	};
 	token: string;
 	refreshToken: string;
 }> {
-	const r = await axios.post(
-		'https://api.opensensemap.org/users/refresh-auth',
-		{
-			token
-		}
-	);
+	const r = await axios.post('https://api.opensensemap.org/users/refresh-auth', {
+		token
+	});
 
 	return r.data;
 }
@@ -113,7 +110,7 @@ export async function signIn(
 	code: 'Authorized';
 	message: 'Successfully signed in';
 	data: {
-		user: IUser;
+		user: User;
 	};
 	token: string;
 	refreshToken: string;
@@ -129,18 +126,12 @@ export async function signIn(
 /**
  * @see https://docs.opensensemap.org/#api-Users-sign_out
  */
-export async function signOut(
-	authorization: string
-): Promise<{ code: 'Ok'; message: 'Successfully signed out' }> {
-	const r = await axios.post(
-		'https://api.opensensemap.org/users/sign-out',
-		undefined,
-		{
-			headers: {
-				Authorization: `Bearer ${authorization}`
-			}
+export async function signOut(authorization: string): Promise<{ code: 'Ok'; message: 'Successfully signed out' }> {
+	const r = await axios.post('https://api.opensensemap.org/users/sign-out', undefined, {
+		headers: {
+			Authorization: `Bearer ${authorization}`
 		}
-	);
+	});
 
 	return r.data;
 }
@@ -151,15 +142,15 @@ export async function signOut(
 export async function updateUser(
 	currentPassword: string,
 	authorization: string,
-	optional: TOupdateUser
-): Promise<IUserUpdated | IUserNotUpdated> {
+	options: UpdateUserOptions
+): Promise<UserUpdated | UserNotUpdated> {
 	const r = await axios.put(
 		'https://api.opensensemap.org/users/me',
 		Object.assign(
 			{
 				currentPassword
 			},
-			optional
+			options
 		),
 		{
 			headers: {
@@ -171,7 +162,7 @@ export async function updateUser(
 	return r.data;
 }
 
-export type TOupdateUser = {
+export type UpdateUserOptions = {
 	email?: string;
 	language?: string;
 	name?: string;
@@ -188,13 +179,10 @@ export async function confirmEmail(
 	code: 'Ok';
 	message: 'E-Mail successfully confirmed. Thank you';
 }> {
-	const r = await axios.post(
-		'https://api.opensensemap.org/users/confirm-email',
-		{
-			email,
-			token
-		}
-	);
+	const r = await axios.post('https://api.opensensemap.org/users/confirm-email', {
+		email,
+		token
+	});
 
 	return r.data;
 }
@@ -205,7 +193,7 @@ export async function confirmEmail(
 export async function getUserBoxes(authorization: string): Promise<{
 	code: 'Ok';
 	data: {
-		boxes: IBoxData[];
+		boxes: BoxData[];
 	};
 }> {
 	const r = await axios.get('https://api.opensensemap.org/users/me/boxes', {
@@ -224,15 +212,11 @@ export async function resendEmailConfirmation(authorization: string): Promise<{
 	code: 'Ok';
 	message: string;
 }> {
-	const r = await axios.post(
-		'https://api.opensensemap.org/users/me/resend-email-confirmation',
-		undefined,
-		{
-			headers: {
-				Authorization: `Bearer ${authorization}`
-			}
+	const r = await axios.post('https://api.opensensemap.org/users/me/resend-email-confirmation', undefined, {
+		headers: {
+			Authorization: `Bearer ${authorization}`
 		}
-	);
+	});
 
 	return r.data;
 }
@@ -240,15 +224,10 @@ export async function resendEmailConfirmation(authorization: string): Promise<{
 /**
  * @see https://docs.opensensemap.org/#api-Users-request_password_reset
  */
-export async function requestPasswordReset(
-	email: string
-): Promise<{ code: 'Ok'; message: 'Password reset initiated' }> {
-	const r = await axios.post(
-		'https://api.opensensemap.org/users/request-password-reset',
-		{
-			email
-		}
-	);
+export async function requestPasswordReset(email: string): Promise<{ code: 'Ok'; message: 'Password reset initiated' }> {
+	const r = await axios.post('https://api.opensensemap.org/users/request-password-reset', {
+		email
+	});
 
 	return r.data;
 }
@@ -263,18 +242,15 @@ export async function passwordReset(
 	code: 'Ok';
 	message: 'Password successfully changed. You can now login with your new password';
 }> {
-	const r = await axios.post(
-		'https://api.opensensemap.org/users/password-reset',
-		{
-			password,
-			token
-		}
-	);
+	const r = await axios.post('https://api.opensensemap.org/users/password-reset', {
+		password,
+		token
+	});
 
 	return r.data;
 }
 
-export interface IUserUpdated {
+export interface UserUpdated {
 	code: 'Ok';
 	message:
 		| 'User successfully saved.'
@@ -282,11 +258,11 @@ export interface IUserUpdated {
 		| 'User successfully saved. Password changed. Please sign in with your new password'
 		| string;
 	data: {
-		me: IUser;
+		me: User;
 	};
 }
 
-export interface IUserNotUpdated {
+export interface UserNotUpdated {
 	code: 'Ok';
 	message: 'User successfully saved.';
 	data: {
@@ -294,7 +270,7 @@ export interface IUserNotUpdated {
 	};
 }
 
-export interface IUser {
+export interface User {
 	name: string;
 	email: string;
 	role: string;
