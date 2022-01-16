@@ -28,9 +28,7 @@ export async function postNewMeasurement(
 			optional
 		),
 		{
-			headers: {
-				Authorization: authorization
-			}
+			headers: authorization ? { Authorization: authorization } : {}
 		}
 	);
 
@@ -237,9 +235,7 @@ export async function postNewMeasurements(
 		`https://api.opensensemap.org/boxes/${senseBoxId}/data`,
 		data,
 		{
-			headers: {
-				Authorization: authorization
-			}
+			headers: authorization ? { Authorization: authorization } : {}
 		}
 	);
 
