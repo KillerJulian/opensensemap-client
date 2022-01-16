@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IBoxData } from './boxes';
+import { BoxData } from './boxes';
 
 //
 // https://docs.opensensemap.org/#api-Users
@@ -12,12 +12,12 @@ export async function register(
 	name: string,
 	email: string,
 	password: string,
-	optional?: TOregister
+	options?: RegisterOptions
 ): Promise<{
 	code: 'Created';
 	message: 'Successfully registered new user';
 	data: {
-		user: IUser;
+		user: User;
 	};
 	token: string;
 	refreshToken: string;
@@ -30,14 +30,14 @@ export async function register(
 				email,
 				password
 			},
-			optional
+			options
 		)
 	);
 
 	return r.data;
 }
 
-export type TOregister = {
+export type RegisterOptions = {
 	language: string;
 };
 
@@ -69,7 +69,7 @@ export async function deleteUser(
 export async function getUser(authorization: string): Promise<{
 	code: 'Ok';
 	data: {
-		me: IUser;
+		me: User;
 	};
 }> {
 	const r = await axios.get('https://api.opensensemap.org/users/me', {
@@ -88,7 +88,7 @@ export async function refreshAuth(token: string): Promise<{
 	code: 'Authorized';
 	message: 'Successfully refreshed auth';
 	data: {
-		user: IUser;
+		user: User;
 	};
 	token: string;
 	refreshToken: string;
@@ -110,7 +110,7 @@ export async function signIn(
 	code: 'Authorized';
 	message: 'Successfully signed in';
 	data: {
-		user: IUser;
+		user: User;
 	};
 	token: string;
 	refreshToken: string;
@@ -142,15 +142,15 @@ export async function signOut(authorization: string): Promise<{ code: 'Ok'; mess
 export async function updateUser(
 	currentPassword: string,
 	authorization: string,
-	optional: TOupdateUser
-): Promise<IUserUpdated | IUserNotUpdated> {
+	options: UpdateUserOptions
+): Promise<UserUpdated | UserNotUpdated> {
 	const r = await axios.put(
 		'https://api.opensensemap.org/users/me',
 		Object.assign(
 			{
 				currentPassword
 			},
-			optional
+			options
 		),
 		{
 			headers: {
@@ -162,7 +162,7 @@ export async function updateUser(
 	return r.data;
 }
 
-export type TOupdateUser = {
+export type UpdateUserOptions = {
 	email?: string;
 	language?: string;
 	name?: string;
@@ -193,7 +193,7 @@ export async function confirmEmail(
 export async function getUserBoxes(authorization: string): Promise<{
 	code: 'Ok';
 	data: {
-		boxes: IBoxData[];
+		boxes: BoxData[];
 	};
 }> {
 	const r = await axios.get('https://api.opensensemap.org/users/me/boxes', {
@@ -250,7 +250,7 @@ export async function passwordReset(
 	return r.data;
 }
 
-export interface IUserUpdated {
+export interface UserUpdated {
 	code: 'Ok';
 	message:
 		| 'User successfully saved.'
@@ -258,11 +258,11 @@ export interface IUserUpdated {
 		| 'User successfully saved. Password changed. Please sign in with your new password'
 		| string;
 	data: {
-		me: IUser;
+		me: User;
 	};
 }
 
-export interface IUserNotUpdated {
+export interface UserNotUpdated {
 	code: 'Ok';
 	message: 'User successfully saved.';
 	data: {
@@ -270,7 +270,7 @@ export interface IUserNotUpdated {
 	};
 }
 
-export interface IUser {
+export interface User {
 	name: string;
 	email: string;
 	role: string;

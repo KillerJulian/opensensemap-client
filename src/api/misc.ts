@@ -7,15 +7,15 @@ import axios from 'axios';
 /**
  * @see https://docs.opensensemap.org/#api-Misc-getStatistics
  */
-export async function getStatistics(optional?: TOgetStatistics): Promise<number[] | string[]> {
+export async function getStatistics(options?: GetStatisticsOptions): Promise<number[] | string[]> {
 	const r = await axios.get('https://api.opensensemap.org/stats', {
-		params: optional
+		params: options
 	});
 
 	return r.data;
 }
 
-export type TOgetStatistics = {
+export type GetStatisticsOptions = {
 	human?: boolean;
 };
 

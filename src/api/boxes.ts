@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IMQTT, ISensor, ISensorUpdate, ITTN, TExposure, TLocation, TModel, TRFC3339Date, TSensorTemplates } from './types';
+import { Exposure, Location, Model, MQTT, RFC3339Date, Sensor, SensorTemplates, SensorUpdate, TTN } from './types';
 
 //
 // https://docs.opensensemap.org/#api-Boxes
@@ -8,7 +8,7 @@ import { IMQTT, ISensor, ISensorUpdate, ITTN, TExposure, TLocation, TModel, TRFC
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getBox
  */
-export async function getBox(senseBoxId: string): Promise<IBoxData[]> {
+export async function getBox(senseBoxId: string): Promise<BoxData[]> {
 	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}`, {
 		params: {
 			format: 'json'
@@ -21,17 +21,17 @@ export async function getBox(senseBoxId: string): Promise<IBoxData[]> {
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getBoxes
  */
-export async function getBoxes(bbox: string, optional?: TOgetBoxes): Promise<IBoxData> {
-	if (optional?.date && optional.date instanceof Date) {
-		optional.date = optional.date.toISOString();
+export async function getBoxes(bbox: string, options?: GetBoxesOptions): Promise<BoxData> {
+	if (options?.date && options.date instanceof Date) {
+		options.date = options.date.toISOString();
 	}
 
-	if (optional?.grouptag && Array.isArray(optional.grouptag)) {
-		optional.grouptag = optional.grouptag.join();
+	if (options?.grouptag && Array.isArray(options.grouptag)) {
+		options.grouptag = options.grouptag.join();
 	}
 
-	if (optional?.exposure && Array.isArray(optional.exposure)) {
-		optional.exposure = optional.exposure.join();
+	if (options?.exposure && Array.isArray(options.exposure)) {
+		options.exposure = options.exposure.join();
 	}
 
 	const r = await axios.get('https://api.opensensemap.org/boxes', {
@@ -40,24 +40,24 @@ export async function getBoxes(bbox: string, optional?: TOgetBoxes): Promise<IBo
 				format: 'json',
 				bbox
 			},
-			optional
+			options
 		)
 	});
 
 	return r.data;
 }
 
-export type TOgetBoxes = {
-	date?: TRFC3339Date | Date;
+export type GetBoxesOptions = {
+	date?: RFC3339Date | Date;
 	phenomenon?: string;
 	grouptag?: string | string[];
-	model?: TModel;
+	model?: Model;
 	classify?: boolean;
 	minimal?: boolean;
 	full?: boolean;
 	near?: string;
 	maxDistance?: number;
-	exposure?: string | TExposure[];
+	exposure?: string | Exposure[];
 };
 
 /**
@@ -65,13 +65,13 @@ export type TOgetBoxes = {
  */
 export async function postNewBox(
 	name: string,
-	exposure: TExposure,
-	location: TLocation,
+	exposure: Exposure,
+	location: Location,
 	authorization: string,
-	optional?: TOpostNewBox
+	options?: PostNewBoxOptions
 ): Promise<{
 	message: 'Box successfully created';
-	data: IBoxData;
+	data: BoxData;
 }> {
 	const r = await axios.post(
 		'https://api.opensensemap.org/boxes',
@@ -81,7 +81,7 @@ export async function postNewBox(
 				exposure,
 				location
 			},
-			optional
+			options
 		),
 		{
 			headers: {
@@ -93,13 +93,13 @@ export async function postNewBox(
 	return r.data;
 }
 
-export type TOpostNewBox = {
+export type PostNewBoxOptions = {
 	grouptag?: string;
-	model?: TModel;
-	sensors?: ISensor[];
-	sensorTemplates?: TSensorTemplates;
-	mqtt?: IMQTT;
-	ttn?: ITTN;
+	model?: Model;
+	sensors?: Sensor[];
+	sensorTemplates?: SensorTemplates;
+	mqtt?: MQTT;
+	ttn?: TTN;
 	useAuth?: boolean;
 };
 
@@ -109,12 +109,12 @@ export type TOpostNewBox = {
 export async function updateBox(
 	senseBoxId: string,
 	authorization: string,
-	optional: TOupdateBox
+	options: UpdateBoxOptions
 ): Promise<{
 	code: 'Ok';
-	data: IBoxData;
+	data: BoxData;
 }> {
-	const r = await axios.put(`https://api.opensensemap.org/boxes/${senseBoxId}`, optional, {
+	const r = await axios.put(`https://api.opensensemap.org/boxes/${senseBoxId}`, options, {
 		headers: {
 			Authorization: `Bearer ${authorization}`
 		}
@@ -123,13 +123,13 @@ export async function updateBox(
 	return r.data;
 }
 
-export type TOupdateBox = {
+export type UpdateBoxOptions = {
 	name?: string;
 	grouptag?: string;
-	location?: TLocation;
-	sensors?: ISensorUpdate;
-	mqtt?: IMQTT;
-	ttn?: ITTN;
+	location?: Location;
+	sensors?: SensorUpdate;
+	mqtt?: MQTT;
+	ttn?: TTN;
 	description?: string;
 	image?: string;
 	addons?: Record<string | number, string | number>;
@@ -161,18 +161,18 @@ export async function deleteBox(
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getSketch
  */
-export async function getSketch(senseBoxId: string, authorization: string, optional?: TOgetSketch): Promise<string> {
+export async function getSketch(senseBoxId: string, authorization: string, options?: GetSketchOptions): Promise<string> {
 	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/script`, {
 		headers: {
 			Authorization: `Bearer ${authorization}`
 		},
-		params: optional
+		params: options
 	});
 
 	return r.data;
 }
 
-export type TOgetSketch = {
+export type GetSketchOptions = {
 	serialPort?: 'Serial1' | 'Serial2';
 	soilDigitalPort?: 'A' | 'B' | 'C';
 	soundMeterPort?: 'A' | 'B' | 'C';
@@ -188,13 +188,13 @@ export type TOgetSketch = {
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getBoxLocations
  */
-export async function getBoxLocations(senseBoxId: string, optional?: TOgetBoxLocations): Promise<IBoxCurrentLocation[]> {
-	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
-		optional['from-date'] = optional['from-date'].toISOString();
+export async function getBoxLocations(senseBoxId: string, options?: GetBoxLocationsOptions): Promise<BoxCurrentLocation[]> {
+	if (options?.['from-date'] && options['from-date'] instanceof Date) {
+		options['from-date'] = options['from-date'].toISOString();
 	}
 
-	if (optional?.['to-date'] && optional['to-date'] instanceof Date) {
-		optional['to-date'] = optional['to-date'].toISOString();
+	if (options?.['to-date'] && options['to-date'] instanceof Date) {
+		options['to-date'] = options['to-date'].toISOString();
 	}
 
 	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/locations`, {
@@ -202,61 +202,61 @@ export async function getBoxLocations(senseBoxId: string, optional?: TOgetBoxLoc
 			{
 				format: 'json'
 			},
-			optional
+			options
 		)
 	});
 
 	return r.data;
 }
 
-export type TOgetBoxLocations = {
-	'from-date': TRFC3339Date | Date;
-	'to-date': TRFC3339Date | Date;
+export type GetBoxLocationsOptions = {
+	'from-date': RFC3339Date | Date;
+	'to-date': RFC3339Date | Date;
 };
 
-export interface IBoxData {
+export interface BoxData {
 	_id: string;
 	name: string;
-	createdAt: TRFC3339Date;
-	exposure: TExposure;
+	createdAt: RFC3339Date;
+	exposure: Exposure;
 	model: string;
 	description?: string;
 	grouptag?: string;
 	weblink?: string;
 	image?: string;
-	currentLocation: IBoxCurrentLocation;
-	updatedAt: TRFC3339Date;
-	sensors: IBoxSensors[];
+	currentLocation: BoxCurrentLocation;
+	updatedAt: RFC3339Date;
+	sensors: BoxSensors[];
 	loc?: {
 		geometry: {
-			timestamp: TRFC3339Date;
-			coordinates: TLocation;
+			timestamp: RFC3339Date;
+			coordinates: Location;
 			type: string;
 		};
 		type: string;
 	}[];
-	lastMeasurementAt?: TRFC3339Date;
-	integrations?: { mqtt: IMQTT | { enabled: false }; ttn?: ITTN };
+	lastMeasurementAt?: RFC3339Date;
+	integrations?: { mqtt: MQTT | { enabled: false }; ttn?: TTN };
 	access_token?: string;
 	useAuth?: boolean;
 }
 
-export interface IBoxSensors {
+export interface BoxSensors {
 	title: string;
 	unit: string;
 	sensorType: string;
 	icon?: string;
 	_id: string;
-	lastMeasurement?: ILastMeasurement | string;
+	lastMeasurement?: LastMeasurement | string;
 }
 
-export interface ILastMeasurement {
+export interface LastMeasurement {
 	value: string;
-	createdAt: TRFC3339Date;
+	createdAt: RFC3339Date;
 }
 
-export interface IBoxCurrentLocation {
-	timestamp: TRFC3339Date;
-	coordinates: TLocation;
+export interface BoxCurrentLocation {
+	timestamp: RFC3339Date;
+	coordinates: Location;
 	type: string;
 }

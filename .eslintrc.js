@@ -40,19 +40,6 @@ module.exports = {
 		'space-unary-ops': 'error',
 		'spaced-comment': 'error',
 		yoda: 'error',
-		'no-unused-vars': 'off',
-		'@typescript-eslint/naming-convention': [
-			'error',
-			{
-				selector: 'interface',
-				format: ['PascalCase'],
-				prefix: ['I']
-			},
-			{
-				selector: 'typeAlias',
-				format: ['PascalCase'],
-				prefix: ['T']
-			}
-		]
+		'no-unused-vars': 'off'
 	}
 };

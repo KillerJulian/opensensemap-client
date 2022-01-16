@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TAdvancedColumns, TExposure, TLocation, TRFC3339Date } from './types';
+import { AdvancedColumns, Exposure, Location, RFC3339Date } from './types';
 
 //
 // https://docs.opensensemap.org/#api-Measurements
@@ -13,10 +13,10 @@ export async function postNewMeasurement(
 	sensorId: string,
 	value: string | number,
 	authorization?: string,
-	optional?: TOpostNewMeasurement
+	options?: PostNewMeasurementOptions
 ): Promise<'Measurement saved in box'> {
-	if (optional?.createdAt && optional.createdAt instanceof Date) {
-		optional.createdAt = optional.createdAt.toISOString();
+	if (options?.createdAt && options.createdAt instanceof Date) {
+		options.createdAt = options.createdAt.toISOString();
 	}
 
 	const r = await axios.post(
@@ -25,7 +25,7 @@ export async function postNewMeasurement(
 			{
 				value: typeof value === 'string' ? value : value.toString()
 			},
-			optional
+			options
 		),
 		{
 			headers: {
@@ -37,9 +37,9 @@ export async function postNewMeasurement(
 	return r.data;
 }
 
-export type TOpostNewMeasurement = {
-	createdAt?: TRFC3339Date | Date;
-	location?: TLocation;
+export type PostNewMeasurementOptions = {
+	createdAt?: RFC3339Date | Date;
+	location?: Location;
 };
 
 /**
@@ -48,32 +48,32 @@ export type TOpostNewMeasurement = {
 export async function getData(
 	senseBoxId: string,
 	sensorId: string,
-	optional?: TOgetData
+	options?: GetDataOptions
 ): Promise<
 	{
 		value: string;
-		location: TLocation;
-		createdAt: TRFC3339Date;
+		location: Location;
+		createdAt: RFC3339Date;
 	}[]
 > {
-	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
-		optional['from-date'] = optional['from-date'].toISOString();
+	if (options?.['from-date'] && options['from-date'] instanceof Date) {
+		options['from-date'] = options['from-date'].toISOString();
 	}
 
-	if (optional?.['to-date'] && optional['to-date'] instanceof Date) {
-		optional['to-date'] = optional['to-date'].toISOString();
+	if (options?.['to-date'] && options['to-date'] instanceof Date) {
+		options['to-date'] = options['to-date'].toISOString();
 	}
 
 	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/data/${sensorId}`, {
-		params: Object.assign({ format: 'json' }, optional)
+		params: Object.assign({ format: 'json' }, options)
 	});
 
 	return r.data;
 }
 
-export type TOgetData = {
-	'from-date'?: TRFC3339Date | Date;
-	'to-date'?: TRFC3339Date | Date;
+export type GetDataOptions = {
+	'from-date'?: RFC3339Date | Date;
+	'to-date'?: RFC3339Date | Date;
 	download?: boolean;
 	outliers?: 'replace' | 'mark';
 	'outlier-window'?: number;
@@ -86,17 +86,17 @@ export async function deleteMeasurements(
 	senseBoxId: string,
 	sensorId: string,
 	authorization: string,
-	optional?: TOdeleteMeasurements
+	options?: DeleteMeasurementsOptions
 ): Promise<{ code: 'Ok'; message: string }> {
-	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
-		optional['from-date'] = optional['from-date'].toISOString();
+	if (options?.['from-date'] && options['from-date'] instanceof Date) {
+		options['from-date'] = options['from-date'].toISOString();
 	}
 
-	if (optional?.['to-date'] && optional['to-date'] instanceof Date) {
-		optional['to-date'] = optional['to-date'].toISOString();
+	if (options?.['to-date'] && options['to-date'] instanceof Date) {
+		options['to-date'] = options['to-date'].toISOString();
 	}
 
-	optional?.timestamps?.forEach((element) => {
+	options?.timestamps?.forEach((element) => {
 		if (element && element instanceof Date) {
 			element = element.toISOString();
 		}
@@ -106,16 +106,16 @@ export async function deleteMeasurements(
 		headers: {
 			Authorization: `Bearer ${authorization}`
 		},
-		data: optional
+		data: options
 	});
 
 	return r.data;
 }
 
-export type TOdeleteMeasurements = {
-	'from-date'?: TRFC3339Date | Date;
-	'to-date'?: TRFC3339Date | Date;
-	timestamps?: Array<TRFC3339Date | Date>;
+export type DeleteMeasurementsOptions = {
+	'from-date'?: RFC3339Date | Date;
+	'to-date'?: RFC3339Date | Date;
+	timestamps?: Array<RFC3339Date | Date>;
 	deleteAllMeasurements?: boolean;
 };
 
@@ -126,30 +126,30 @@ export async function getDataMulti(
 	boxId: string[] | undefined,
 	bbox: string | undefined,
 	phenomenon: string,
-	optional?: TOgetDataMulti
+	options?: GetDataMultiOptions
 ): Promise<
 	{
-		createdAt: TRFC3339Date;
+		createdAt: RFC3339Date;
 		value: string;
 		sensorId: string;
 		lat: number;
 		lon: number;
 	}[]
 > {
-	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
-		optional['from-date'] = optional['from-date'].toISOString();
+	if (options?.['from-date'] && options['from-date'] instanceof Date) {
+		options['from-date'] = options['from-date'].toISOString();
 	}
 
-	if (optional?.['to-date'] && optional['to-date'] instanceof Date) {
-		optional['to-date'] = optional['to-date'].toISOString();
+	if (options?.['to-date'] && options['to-date'] instanceof Date) {
+		options['to-date'] = options['to-date'].toISOString();
 	}
 
-	if (optional?.columns && Array.isArray(optional.columns)) {
-		optional.columns = optional.columns.join();
+	if (options?.columns && Array.isArray(options.columns)) {
+		options.columns = options.columns.join();
 	}
 
-	if (optional?.exposure && Array.isArray(optional.exposure)) {
-		optional.exposure = optional.exposure.join();
+	if (options?.exposure && Array.isArray(options.exposure)) {
+		options.exposure = options.exposure.join();
 	}
 
 	const r = await axios.get('https://api.opensensemap.org/boxes/data', {
@@ -160,19 +160,19 @@ export async function getDataMulti(
 				bbox,
 				phenomenon
 			},
-			optional
+			options
 		)
 	});
 
 	return r.data;
 }
 
-export type TOgetDataMulti = {
-	'from-date'?: TRFC3339Date | Date;
-	'to-date'?: TRFC3339Date | Date;
-	columns?: string | TAdvancedColumns[];
+export type GetDataMultiOptions = {
+	'from-date'?: RFC3339Date | Date;
+	'to-date'?: RFC3339Date | Date;
+	columns?: string | AdvancedColumns[];
 	download?: boolean;
-	exposure?: string | TExposure[];
+	exposure?: string | Exposure[];
 };
 
 /**
@@ -180,7 +180,7 @@ export type TOgetDataMulti = {
  */
 export async function getLatestMeasurements(senseBoxId: string): Promise<{
 	_id: string;
-	sensors: IGetLatestMeasurement[];
+	sensors: GetLatestMeasurement[];
 }> {
 	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/sensors`);
 
@@ -193,14 +193,14 @@ export async function getLatestMeasurements(senseBoxId: string): Promise<{
 export async function getLatestMeasurementOfSensor(
 	senseBoxId: string,
 	sensorId: string,
-	optional?: TOgetLatestMeasurementOfSensor
-): Promise<IGetLatestMeasurement | string> {
-	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/sensors/${sensorId}`, { params: optional });
+	options?: GetLatestMeasurementOfSensorOptions
+): Promise<GetLatestMeasurement | string> {
+	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}/sensors/${sensorId}`, { params: options });
 
 	return r.data;
 }
 
-export type TOgetLatestMeasurementOfSensor = {
+export type GetLatestMeasurementOfSensorOptions = {
 	onlyValue?: boolean;
 };
 
@@ -209,7 +209,7 @@ export type TOgetLatestMeasurementOfSensor = {
  */
 export async function postNewMeasurements(
 	senseBoxId: string,
-	data: TDataPostNewMeasurements,
+	data: PostNewMeasurementsData,
 	authorization?: string
 ): Promise<'Measurements saved in box'> {
 	data.forEach((element) => {
@@ -231,14 +231,14 @@ export async function postNewMeasurements(
 	return r.data;
 }
 
-export type TDataPostNewMeasurements = {
+export type PostNewMeasurementsData = {
 	sensor: string;
 	value: string | number;
-	createdAt?: TRFC3339Date | Date;
-	location?: TLocation;
+	createdAt?: RFC3339Date | Date;
+	location?: Location;
 }[];
 
-export interface IGetLatestMeasurement {
+export interface GetLatestMeasurement {
 	_id: string;
 	icon: string;
 	sensorType: string;
@@ -246,6 +246,6 @@ export interface IGetLatestMeasurement {
 	title: string;
 	lastMeasurement: {
 		value: string;
-		createdAt: TRFC3339Date;
+		createdAt: RFC3339Date;
 	};
 }
