@@ -2,9 +2,7 @@ import * as client from '../../dist/index';
 
 async function start() {
 	// Get information about a senseBox
-	const r = await client
-		.getBox('57000b8745fd40c8196ad04c')
-		.catch((e) => console.error(e));
+	const r = await client.getBox('57000b8745fd40c8196ad04c').catch((e) => console.error(e));
 
 	console.log(JSON.stringify(r));
 
@@ -17,9 +15,7 @@ async function start() {
 		value: 'Your data'
 	});
 
-	client
-		.postNewMeasurements('Your senseBoxId', data, authToken)
-		.catch(console.error);
+	client.postNewMeasurements('Your senseBoxId', data, authToken).catch(console.error);
 }
 
 start();
