@@ -2,6 +2,8 @@
 
 Based on API version: `v9.8`
 
+[![NPM](https://nodei.co/npm/opensensemap-client.png)](https://npmjs.org/package/opensensemap-client)
+
 ## Install
 
 ```sh
@@ -54,7 +56,7 @@ async function start() {
 	console.log(JSON.stringify(r));
 
 	// Post new sensor data
-	const data = [];
+	const data: client.PostNewMeasurementsData = [];
 	const authToken = 'Your senseBox token';
 
 	data.push({
