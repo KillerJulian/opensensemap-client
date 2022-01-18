@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TExposure, TRFC3339Date } from './types';
+import { Exposure, RFC3339Date } from './types';
 
 //
 // https://docs.opensensemap.org/#api-Interpolation
@@ -11,41 +11,39 @@ import { TExposure, TRFC3339Date } from './types';
 export async function calculateIdw(
 	phenomenon: string,
 	bbox: string,
-	optional?: TOcalculateIdw
-): Promise<
-	{ code: 'NotFound'; message: 'no measurements found' } | ICalculateIdw
-> {
-	if (optional?.['from-date'] && optional['from-date'] instanceof Date) {
-		optional['from-date'] = optional['from-date'].toISOString();
+	options?: CalculateIdwOptions
+): Promise<{ code: 'NotFound'; message: 'no measurements found' } | CalculateIdw> {
+	if (options?.['from-date'] && options['from-date'] instanceof Date) {
+		options['from-date'] = options['from-date'].toISOString();
 	}
 
-	if (optional?.['to-date'] && optional['to-date'] instanceof Date) {
-		optional['to-date'] = optional['to-date'].toISOString();
+	if (options?.['to-date'] && options['to-date'] instanceof Date) {
+		options['to-date'] = options['to-date'].toISOString();
 	}
 
-	if (optional?.exposure && Array.isArray(optional.exposure)) {
-		optional.exposure = optional.exposure.join();
+	if (options?.exposure && Array.isArray(options.exposure)) {
+		options.exposure = options.exposure.join();
 	}
 
 	const r = await axios.get('https://api.opensensemap.org/statistics/idw', {
-		params: Object.assign({ phenomenon, bbox }, optional)
+		params: Object.assign({ phenomenon, bbox }, options)
 	});
 
 	return r.data;
 }
 
-export type TOcalculateIdw = {
-	'from-date'?: TRFC3339Date | Date;
-	'to-date'?: TRFC3339Date | Date;
+export type CalculateIdwOptions = {
+	'from-date'?: RFC3339Date | Date;
+	'to-date'?: RFC3339Date | Date;
 	gridType?: 'hex' | 'square' | 'triangle';
 	cellWidth?: number;
 	power?: number;
 	numTimeSteps?: number;
 	numClasses?: number;
-	exposure?: string | TExposure[];
+	exposure?: string | Exposure[];
 };
 
-export interface ICalculateIdw {
+export interface CalculateIdw {
 	code: 'Ok';
 	data: {
 		breaks: number[];
@@ -62,6 +60,6 @@ export interface ICalculateIdw {
 				};
 			};
 		}[];
-		timesteps: TRFC3339Date[];
+		timesteps: RFC3339Date[];
 	};
 }
