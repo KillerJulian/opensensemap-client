@@ -2,6 +2,8 @@
 
 Based on API version: `v9.8`
 
+[![NPM](https://nodei.co/npm/opensensemap-client.png)](https://npmjs.org/package/opensensemap-client)
+
 ## Install
 
 ```sh
