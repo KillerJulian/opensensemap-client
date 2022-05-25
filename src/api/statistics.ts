@@ -9,7 +9,7 @@ import { Columns, Exposure, Operation, RFC3339Date } from './types';
  * @see https://docs.opensensemap.org/#api-Statistics-descriptive
  */
 export async function descriptive(
-	boxId: string | undefined,
+	boxId: string[],
 	bbox: string | undefined,
 	phenomenon: string,
 	fromDate: RFC3339Date | Date,
@@ -37,7 +37,7 @@ export async function descriptive(
 	const r = await axios.get('https://api.opensensemap.org/statistics/descriptive', {
 		params: Object.assign(
 			{
-				boxId,
+				boxId: boxId.join(),
 				bbox,
 				phenomenon,
 				'from-date': fromDate,
