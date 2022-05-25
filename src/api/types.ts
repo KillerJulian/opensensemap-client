@@ -1,6 +1,9 @@
 export type RFC3339Date = string;
 
 export type Model =
+	| 'homeV2Lora'
+	| 'homeV2Ethernet'
+	| 'homeV2Wifi'
 	| 'homeEthernet'
 	| 'homeWifi'
 	| 'homeEthernetFeinstaub'
@@ -9,7 +12,8 @@ export type Model =
 	| 'luftdaten_sds011_dht11'
 	| 'luftdaten_sds011_dht22'
 	| 'luftdaten_sds011_bmp180'
-	| 'luftdaten_sds011_bme280';
+	| 'luftdaten_sds011_bme280'
+	| 'hackair_home_v2';
 
 export type Exposure = 'indoor' | 'outdoor' | 'mobile' | 'unknown';
 
@@ -54,7 +58,8 @@ export type SensorTemplates =
 	| 'smt50'
 	| 'soundlevelmeter'
 	| 'windspeed'
-	| 'scd30';
+	| 'scd30'
+	| 'dps310';
 
 export interface MQTT {
 	enabled: boolean;
@@ -69,7 +74,7 @@ export interface TTN {
 	dev_id: string;
 	app_id: string;
 	profile: 'lora-serialization' | 'sensebox/home' | 'json' | 'debug' | 'cayenne-lpp';
-	decodeOptions?: [];
+	decodeOptions?: unknown[];
 	port: number;
 }
 
@@ -80,8 +85,16 @@ export interface Sensor {
 	icon?: string;
 }
 
-export interface SensorUpdate extends Sensor {
-	edited: string;
-	new: string;
-	deleted: string;
+export interface SensorEdited extends Sensor {
+	_id: string;
+	edited: 'true' | string;
+}
+
+export interface SensorNew extends Sensor {
+	new: 'true' | string;
+}
+
+export interface SensorDeleted {
+	_id: string;
+	deleted: 'true' | string;
 }

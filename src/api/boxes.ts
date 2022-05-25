@@ -1,5 +1,17 @@
 import axios from 'axios';
-import { Exposure, Location, Model, MQTT, RFC3339Date, Sensor, SensorTemplates, SensorUpdate, TTN } from './types';
+import {
+	Exposure,
+	Location,
+	Model,
+	MQTT,
+	RFC3339Date,
+	Sensor,
+	SensorDeleted,
+	SensorEdited,
+	SensorNew,
+	SensorTemplates,
+	TTN
+} from './types';
 
 //
 // https://docs.opensensemap.org/#api-Boxes
@@ -8,7 +20,7 @@ import { Exposure, Location, Model, MQTT, RFC3339Date, Sensor, SensorTemplates, 
 /**
  * @see https://docs.opensensemap.org/#api-Boxes-getBox
  */
-export async function getBox(senseBoxId: string): Promise<BoxData[]> {
+export async function getBox(senseBoxId: string): Promise<BoxData> {
 	const r = await axios.get(`https://api.opensensemap.org/boxes/${senseBoxId}`, {
 		params: {
 			format: 'json'
@@ -97,7 +109,7 @@ export type PostNewBoxOptions = {
 	grouptag?: string;
 	model?: Model;
 	sensors?: Sensor[];
-	sensorTemplates?: SensorTemplates;
+	sensorTemplates?: SensorTemplates[];
 	mqtt?: MQTT;
 	ttn?: TTN;
 	useAuth?: boolean;
@@ -125,9 +137,9 @@ export async function updateBox(
 
 export type UpdateBoxOptions = {
 	name?: string;
-	grouptag?: string;
+	grouptag?: string[];
 	location?: Location;
-	sensors?: SensorUpdate;
+	sensors?: (SensorEdited | SensorNew | SensorDeleted)[];
 	mqtt?: MQTT;
 	ttn?: TTN;
 	description?: string;
@@ -221,7 +233,7 @@ export interface BoxData {
 	exposure: Exposure;
 	model: string;
 	description?: string;
-	grouptag?: string;
+	grouptag?: string[];
 	weblink?: string;
 	image?: string;
 	currentLocation: BoxCurrentLocation;
@@ -242,11 +254,11 @@ export interface BoxData {
 }
 
 export interface BoxSensors {
+	_id: string;
 	title: string;
 	unit: string;
 	sensorType: string;
 	icon?: string;
-	_id: string;
 	lastMeasurement?: LastMeasurement | string;
 }
 
@@ -256,7 +268,7 @@ export interface LastMeasurement {
 }
 
 export interface BoxCurrentLocation {
-	timestamp: RFC3339Date;
 	coordinates: Location;
 	type: string;
+	timestamp: RFC3339Date;
 }

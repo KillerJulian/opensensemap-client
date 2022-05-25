@@ -72,7 +72,6 @@ export async function getData(
 export type GetDataOptions = {
 	'from-date'?: RFC3339Date | Date;
 	'to-date'?: RFC3339Date | Date;
-	download?: boolean;
 	outliers?: 'replace' | 'mark';
 	'outlier-window'?: number;
 };
@@ -173,7 +172,6 @@ export type GetDataMultiOptions = {
 	'from-date'?: RFC3339Date | Date;
 	'to-date'?: RFC3339Date | Date;
 	columns?: string | AdvancedColumns[];
-	download?: boolean;
 	exposure?: string | Exposure[];
 };
 
