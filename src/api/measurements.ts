@@ -72,7 +72,6 @@ export async function getData(
 export type GetDataOptions = {
 	'from-date'?: RFC3339Date | Date;
 	'to-date'?: RFC3339Date | Date;
-	download?: boolean;
 	outliers?: 'replace' | 'mark';
 	'outlier-window'?: number;
 };
@@ -94,11 +93,15 @@ export async function deleteMeasurements(
 		options['to-date'] = options['to-date'].toISOString();
 	}
 
-	options?.timestamps?.forEach((element) => {
-		if (element && element instanceof Date) {
-			element = element.toISOString();
-		}
-	});
+	if (options && Array.isArray(options.timestamps)) {
+		options.timestamps = options.timestamps.map((element) => {
+			if (element instanceof Date) {
+				return element.toISOString();
+			}
+
+			return element;
+		});
+	}
 
 	const r = await axios.delete(`https://api.opensensemap.org/boxes/${senseBoxId}/${sensorId}/measurements`, {
 		headers: {
@@ -169,7 +172,6 @@ export type GetDataMultiOptions = {
 	'from-date'?: RFC3339Date | Date;
 	'to-date'?: RFC3339Date | Date;
 	columns?: string | AdvancedColumns[];
-	download?: boolean;
 	exposure?: string | Exposure[];
 };
 
@@ -210,7 +212,7 @@ export async function postNewMeasurements(
 	data: PostNewMeasurementsData,
 	authorization?: string
 ): Promise<'Measurements saved in box'> {
-	data.forEach((element) => {
+	data = data.map((element) => {
 		if (typeof element.value === 'number') {
 			element.value = element.value.toString();
 		}
@@ -218,6 +220,8 @@ export async function postNewMeasurements(
 		if (element.createdAt && element.createdAt instanceof Date) {
 			element.createdAt = element.createdAt.toISOString();
 		}
+
+		return element;
 	});
 
 	const r = await axios.post(`https://api.opensensemap.org/boxes/${senseBoxId}/data`, data, {
